@@ -90,9 +90,7 @@ class MainScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const RecyclePage(),
-                      ),
+                      MaterialPageRoute(builder: (context) => RecyclePage()),
                     );
                   },
                   child: Text(AppStrings.map),
