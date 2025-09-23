@@ -1,3 +1,6 @@
+import 'package:eco_ciudad/calendar.dart';
+import 'package:eco_ciudad/recycle.dart';
+import 'package:eco_ciudad/statistics.dart';
 import 'package:flutter/material.dart';
 
 // Simulación de strings.xml
@@ -20,7 +23,7 @@ class MainApp extends StatelessWidget {
       home: const MainScreen(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
-      
+
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green[700],
@@ -52,12 +55,8 @@ class MainScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          // Logo
-            Image.asset(
-              'assets/Eco-Ciudad-Logo.png',
-              width: 410,
-              height: 410,
-            ),
+            // Logo
+            Image.asset('assets/Eco-Ciudad-Logo.png', width: 410, height: 410),
             const SizedBox(height: 24), // Espacio uniforme
             // Breve descripción
             const Padding(
@@ -79,10 +78,9 @@ class MainScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Scaffold(
-                        appBar: AppBar(title: const Text('Calendario de Recolección')), 
-                        body: const Center(child: Text('Aquí va el calendario')),
-                      )),
+                      MaterialPageRoute(
+                        builder: (context) => const CalendarPage(),
+                      ),
                     );
                   },
                   child: Text(AppStrings.calendar),
@@ -92,10 +90,9 @@ class MainScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Scaffold(
-                        appBar: AppBar(title: const Text('Puntos de Reciclaje')), 
-                        body: const Center(child: Text('Aquí van los puntos de reciclaje')),
-                      )),
+                      MaterialPageRoute(
+                        builder: (context) => const RecyclePage(),
+                      ),
                     );
                   },
                   child: Text(AppStrings.map),
@@ -105,10 +102,9 @@ class MainScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Scaffold(
-                        appBar: AppBar(title: const Text('Mis Estadísticas')), 
-                        body: const Center(child: Text('Aquí van las estadísticas del usuario')),
-                      )),
+                      MaterialPageRoute(
+                        builder: (context) => const StatisticsPage(),
+                      ),
                     );
                   },
                   child: Text(AppStrings.stats),
