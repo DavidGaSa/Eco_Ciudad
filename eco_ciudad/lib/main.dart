@@ -40,66 +40,82 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(' Bienvenido a Eco-Ciudad'),
+        title: const Text('Bienvenido a Eco-Ciudad'),
         centerTitle: true,
         backgroundColor: Colors.green[700],
         foregroundColor: Colors.white,
       ),
-      body: Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 32),
-              Wrap(
-          spacing: 16,
-          runSpacing: 16,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.lightGreen[100], // Fondo verde claro
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              key: const Key('btnCalendar'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Scaffold(
-                    appBar: AppBar(title: const Text('Calendario de Recolección')), 
-                    body: const Center(child: Text('Aquí va el calendario')),
-                  )),
-                );
-              },
-              child: Text(AppStrings.calendar),
+          // Logo
+            Image.asset(
+              'assets/Eco-Ciudad-Logo.png',
+              width: 410,
+              height: 410,
             ),
-            ElevatedButton(
-              key: const Key('btnMap'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Scaffold(
-                    appBar: AppBar(title: const Text('Puntos de Reciclaje')), 
-                    body: const Center(child: Text('Aquí van los puntos de reciclaje')),
-                  )),
-                );
-              },
-              child: Text(AppStrings.map),
+            const SizedBox(height: 24), // Espacio uniforme
+            // Breve descripción
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.0),
+              child: Text(
+                'El reciclaje es esencial en el ciudado del planeta y la salud de los habitantes. Por eso presentamos Eco-Ciudad, una app para facilitar el reciclaje en tu ciudad al mismo tiempo que te motiva a llevar un control de tu impacto ambiental.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, color: Colors.black87),
+              ),
             ),
-            ElevatedButton(
-              key: const Key('btnStats'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Scaffold(
-                    appBar: AppBar(title: const Text('Puntos de Reciclaje')), 
-                    body: const Center(child: Text('Aquí van las estadísticas del usuario')),
-                  )),
-                );
-              },
-              child: Text(AppStrings.stats),
+            const SizedBox(height: 24), // Espacio uniforme
+            // Botones
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                ElevatedButton(
+                  key: const Key('btnCalendar'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Scaffold(
+                        appBar: AppBar(title: const Text('Calendario de Recolección')), 
+                        body: const Center(child: Text('Aquí va el calendario')),
+                      )),
+                    );
+                  },
+                  child: Text(AppStrings.calendar),
+                ),
+                ElevatedButton(
+                  key: const Key('btnMap'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Scaffold(
+                        appBar: AppBar(title: const Text('Puntos de Reciclaje')), 
+                        body: const Center(child: Text('Aquí van los puntos de reciclaje')),
+                      )),
+                    );
+                  },
+                  child: Text(AppStrings.map),
+                ),
+                ElevatedButton(
+                  key: const Key('btnStats'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Scaffold(
+                        appBar: AppBar(title: const Text('Mis Estadísticas')), 
+                        body: const Center(child: Text('Aquí van las estadísticas del usuario')),
+                      )),
+                    );
+                  },
+                  child: Text(AppStrings.stats),
+                ),
+              ],
             ),
           ],
-        ),
-            ],
-          ),
         ),
       ),
     );
