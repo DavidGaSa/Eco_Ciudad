@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: eco_ciudad   # ✅ point to your real project root
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -16,7 +20,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'   # ✅ specify explicitly
+          flutter-version: '3.22.0'
           channel: 'stable'
 
       - name: Install dependencies
@@ -25,8 +29,11 @@ jobs:
       - name: Build Flutter web
         run: flutter build web --release
 
+      - name: Copy index.html to 404.html (for routing)
+        run: cp build/web/index.html build/web/404.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
+          publish_dir: eco_ciudad/build/web   # ✅ must match subfolder
