@@ -15,7 +15,7 @@ const RESOURCES = {"flutter.js": "888483df48293866f9f41d3d9274a779",
 "assets/AssetManifest.bin.json": "b5ea8d50af2e996b3e22104a5aebb650",
 "assets/assets/Eco-Ciudad-Logo.png": "d405fcf8d7d53d90e4f61875f9e44bca",
 "assets/assets/contenedores.csv": "096574e50761f73a481a4fc2567072dd",
-"assets/fonts/MaterialIcons-Regular.otf": "053e8d397bce5b7b8d590e20817cc8ef",
+"assets/fonts/MaterialIcons-Regular.otf": "25b7af46700d4110f699d5f227876685",
 "assets/NOTICES": "ddc05db0edecae96a1a3cd2f124084b8",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "33b7d9392238c04c131b6ce224e13711",
 "assets/packages/flutter_map/lib/assets/flutter_map_logo.png": "208d63cc917af9713fc9572bd5c09362",
@@ -35,9 +35,9 @@ const RESOURCES = {"flutter.js": "888483df48293866f9f41d3d9274a779",
 "canvaskit/canvaskit.js.symbols": "58832fbed59e00d2190aa295c4d70360",
 "canvaskit/skwasm.js.symbols": "0088242d10d7e7d6d2649d1fe1bda7c1",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"flutter_bootstrap.js": "3ba6558238e70f2300cc6b744d42cea4",
+"flutter_bootstrap.js": "a16c1135e3cfc6a84f6fb9c58a0e449a",
 "version.json": "1437772f1b4dcc1208a35c0ab8f2949f",
-"main.dart.js": "aa2c9db2362a7908e611411135b1c4c4"};
+"main.dart.js": "02cae24cf65d1c24795a7df1af8f1075"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
