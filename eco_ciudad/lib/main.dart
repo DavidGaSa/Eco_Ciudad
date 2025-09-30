@@ -57,13 +57,13 @@ class MainScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Logo
-            Image.asset('assets/Eco-Ciudad-Logo.png', width: 350, height: 350),
+            Image.asset('assets/Eco-Ciudad-Logo.png', width: 330, height: 330),
             // Espacio uniforme
             // Breve descripción
             const SizedBox(height: 8), // Espacio uniforme
               // Breve descripción
             Center(
-              child: Container(
+              child: SizedBox(
                 width: 400,
                 child: const Text(
                   'El reciclaje es esencial en el ciudado del planeta y la salud de los habitantes. Por eso presentamos Eco-Ciudad, una app para facilitar el reciclaje en tu ciudad al mismo tiempo que te motiva a llevar un control de tu impacto ambiental.',
