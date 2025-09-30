@@ -7,27 +7,42 @@ class StatisticsPage extends StatefulWidget {
   State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
+// ...existing code...
 class _StatisticsPageState extends State<StatisticsPage> {
-  int _recycleCount = 0;
   final int _monthlyGoal = 50; // Example monthly goal
+
+  // Tipos de residuos y su conteo
+  final Map<String, int> _recycleCounts = {
+    'Plástico': 0,
+    'Papel': 0,
+    'Vidrio': 0,
+    'Orgánico': 0,
+    'Otros': 0,
+  };
+
+  String _selectedType = 'Plástico';
 
   void _incrementRecycleCount() {
     setState(() {
-      _recycleCount++;
+      _recycleCounts[_selectedType] = (_recycleCounts[_selectedType] ?? 0) + 1;
     });
   }
 
   void _decrementRecycleCount() {
     setState(() {
-      if (_recycleCount > 0) {
-        _recycleCount--;
+      if ((_recycleCounts[_selectedType] ?? 0) > 0) {
+        _recycleCounts[_selectedType] = (_recycleCounts[_selectedType] ?? 0) - 1;
       }
     });
   }
 
+  int get _totalRecycleCount =>
+      _recycleCounts.values.fold(0, (sum, count) => sum + count);
+
   @override
   Widget build(BuildContext context) {
-    double progress = _monthlyGoal > 0 ? _recycleCount / _monthlyGoal : 0;
+    double progress =
+        _monthlyGoal > 0 ? _totalRecycleCount / _monthlyGoal : 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,8 +76,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       textBaseline: TextBaseline.alphabetic,
                       children: [
                         Text(
-                          '$_recycleCount',
-                          style: Theme.of(context).textTheme.displayLarge
+                          '$_totalRecycleCount',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayLarge
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
@@ -88,6 +105,24 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ),
             ),
             const SizedBox(height: 24),
+            // Selector de tipo de residuo
+            DropdownButton<String>(
+              value: _selectedType,
+              items: _recycleCounts.keys
+                  .map((type) => DropdownMenuItem(
+                        value: type,
+                        child: Text(type),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    _selectedType = value;
+                  });
+                }
+              },
+            ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -121,9 +156,28 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 24),
+            // Tabla resumen por tipo
+            Expanded(
+              child: ListView(
+                children: _recycleCounts.entries
+                    .map(
+                      (entry) => ListTile(
+                        leading: Icon(Icons.recycling, color: Colors.green[700]),
+                        title: Text(entry.key),
+                        trailing: Text(
+                          '${entry.value} bolsas',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+// ...existing code...

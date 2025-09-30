@@ -2,6 +2,7 @@ import 'package:eco_ciudad/calendar.dart';
 import 'package:eco_ciudad/recycle.dart';
 import 'package:eco_ciudad/statistics.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_paragraph/flutter_paragraph.dart'; 
 
 // Simulación de strings.xml
 class AppStrings {
@@ -56,15 +57,19 @@ class MainScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Logo
-            Image.asset('assets/Eco-Ciudad-Logo.png', width: 410, height: 410),
-            const SizedBox(height: 24), // Espacio uniforme
+            Image.asset('assets/Eco-Ciudad-Logo.png', width: 350, height: 350),
+            // Espacio uniforme
             // Breve descripción
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.0),
-              child: Text(
-                'El reciclaje es esencial en el ciudado del planeta y la salud de los habitantes. Por eso presentamos Eco-Ciudad, una app para facilitar el reciclaje en tu ciudad al mismo tiempo que te motiva a llevar un control de tu impacto ambiental.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: Colors.black87),
+            const SizedBox(height: 8), // Espacio uniforme
+              // Breve descripción
+            Center(
+              child: Container(
+                width: 400,
+                child: const Text(
+                  'El reciclaje es esencial en el ciudado del planeta y la salud de los habitantes. Por eso presentamos Eco-Ciudad, una app para facilitar el reciclaje en tu ciudad al mismo tiempo que te motiva a llevar un control de tu impacto ambiental.',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                ),
               ),
             ),
             const SizedBox(height: 24), // Espacio uniforme
