@@ -7,27 +7,53 @@ class StatisticsPage extends StatefulWidget {
   State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
-class _StatisticsPageState extends State<StatisticsPage> {
-  int _recycleCount = 0;
-  final int _monthlyGoal = 50; // Example monthly goal
+class _StatisticsPageState extends State<StatisticsPage> with RestorationMixin {
+  // Persistencia del contador durante la sesión
+  final RestorableInt _recycleCount = RestorableInt(0);
+  final int _monthlyGoal = 50;
+
+  @override
+  String? get restorationId => 'statistics_page';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_recycleCount, 'recycle_count');
+    debugPrint('restoreState: recycleCount=${_recycleCount.value}');
+  }
 
   void _incrementRecycleCount() {
     setState(() {
-      _recycleCount++;
+      _recycleCount.value++;
+      debugPrint('Añadir: recycleCount=${_recycleCount.value}');
     });
   }
 
   void _decrementRecycleCount() {
     setState(() {
-      if (_recycleCount > 0) {
-        _recycleCount--;
+      if (_recycleCount.value > 0) {
+        _recycleCount.value--;
+        debugPrint('Quitar: recycleCount=${_recycleCount.value}');
       }
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    debugPrint('initState');
+  }
+
+  @override
+  void dispose() {
+    debugPrint('dispose');
+    _recycleCount.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    double progress = _monthlyGoal > 0 ? _recycleCount / _monthlyGoal : 0;
+    debugPrint('build');
+    double progress = _monthlyGoal > 0 ? _recycleCount.value / _monthlyGoal : 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +87,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       textBaseline: TextBaseline.alphabetic,
                       children: [
                         Text(
-                          '$_recycleCount',
+                          '${_recycleCount.value}',
                           style: Theme.of(context).textTheme.displayLarge
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
