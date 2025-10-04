@@ -4,6 +4,34 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:csv/csv.dart';
+import 'package:geolocator/geolocator.dart';
+
+Future<Position> _getCurrentLocation() async {
+  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // Instead of throwing, prompt user to enable location
+    await Geolocator.openLocationSettings();
+    return Future.error('Location services are disabled.');
+  }
+
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+      'Location permissions are permanently denied, cannot request permissions.',
+    );
+  }
+
+  return await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high,
+  );
+}
 
 class RecyclePage extends StatefulWidget {
   const RecyclePage({super.key});
@@ -16,7 +44,7 @@ class _RecyclePageState extends State<RecyclePage> {
   final MapController _mapController = MapController();
   final int maxBins = 100;
 
-  double _currentZoom = 13;
+  double _currentZoom = 18;
 
   List<LatLng> recycleBins = [];
   List<LatLng> bins = [];
@@ -43,6 +71,18 @@ class _RecyclePageState extends State<RecyclePage> {
 
     setState(() {
       recycleBins = bins.take(maxBins).toList();
+    });
+
+    try {
+      Position position = await _getCurrentLocation();
+      _mapController.move(
+        LatLng(position.latitude, position.longitude),
+        _currentZoom,
+      );
+    } catch (e) {}
+
+    setState(() {
+      updateBins();
     });
   }
 
@@ -94,7 +134,8 @@ class _RecyclePageState extends State<RecyclePage> {
                   children: [
                     TileLayer(
                       urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png",
+                      subdomains: const ['a', 'b', 'c', 'd'],
                       userAgentPackageName: 'com.example.recycle_app',
                     ),
                     MarkerLayer(
@@ -133,6 +174,51 @@ class _RecyclePageState extends State<RecyclePage> {
                         child: const Icon(Icons.remove),
                       ),
                     ],
+                  ),
+                ),
+                Positioned(
+                  top: 80,
+                  right: 20,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green[700],
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pink,
+                          blurRadius: 10,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Mostrando $maxBins puntos de reciclaje mas cercanos.',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Buscar tu barrio/calle...',
+                      fillColor: Colors.white,
+                      filled: true,
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    onChanged: (value) {},
                   ),
                 ),
               ],

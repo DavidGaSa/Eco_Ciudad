@@ -37,6 +37,8 @@ dependencies:
   flutter_map: ^8.2.2
   latlong2: ^0.9.1
   csv: ^6.0.0
+  geolocator: ^14.0.2
+  syncfusion_flutter_calendar: ^31.1.22
 
 dev_dependencies:
   flutter_test:
