@@ -14,7 +14,7 @@ class RecyclePage extends StatefulWidget {
 
 class _RecyclePageState extends State<RecyclePage> {
   final MapController _mapController = MapController();
-  final int maxBins = 1000;
+  final int maxBins = 100;
 
   double _currentZoom = 13;
 
