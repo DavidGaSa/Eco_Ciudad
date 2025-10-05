@@ -33,6 +33,12 @@ Run the app:
 flutter run
 ```
 
+Test the app:
+
+```bash
+flutter test
+```
+
 ## Project Structure
 
 ```

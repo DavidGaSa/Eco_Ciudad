@@ -34,10 +34,27 @@ Future<Position> _getCurrentLocation() async {
 }
 
 class RecyclePage extends StatefulWidget {
-  const RecyclePage({super.key});
+  final Widget? map;
+
+  const RecyclePage({super.key, this.map});
 
   @override
   State<RecyclePage> createState() => _RecyclePageState();
+}
+
+Future<void> parseBins(List<LatLng> bins) async {
+  final rawData = await rootBundle.loadString("assets/contenedores.csv");
+
+  List<List<dynamic>> rows = const CsvToListConverter(
+    fieldDelimiter: ',',
+    eol: '\n',
+  ).convert(rawData);
+
+  for (int i = 1; i < rows.length; i++) {
+    final double lon = double.parse(rows[i][9].toString());
+    final double lat = double.parse(rows[i][10].toString());
+    bins.add(LatLng(lat, lon));
+  }
 }
 
 class _RecyclePageState extends State<RecyclePage> {
@@ -56,18 +73,7 @@ class _RecyclePageState extends State<RecyclePage> {
   }
 
   Future<void> _loadCsv() async {
-    final rawData = await rootBundle.loadString("assets/contenedores.csv");
-
-    List<List<dynamic>> rows = const CsvToListConverter(
-      fieldDelimiter: ',',
-      eol: '\n',
-    ).convert(rawData);
-
-    for (int i = 1; i < rows.length; i++) {
-      final double lon = double.parse(rows[i][9].toString());
-      final double lat = double.parse(rows[i][10].toString());
-      bins.add(LatLng(lat, lon));
-    }
+    await parseBins(bins);
 
     setState(() {
       recycleBins = bins.take(maxBins).toList();
@@ -114,7 +120,7 @@ class _RecyclePageState extends State<RecyclePage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Puntos de Reciclaje')),
       body: recycleBins.isEmpty
-          ? const Center(child: CircularProgressIndicator())
+          ? widget.map ?? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 FlutterMap(
