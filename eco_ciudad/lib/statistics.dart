@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Es un StatefulWidget porque su estado (los contadores de reciclaje) cambia.
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
 
@@ -7,11 +8,11 @@ class StatisticsPage extends StatefulWidget {
   State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
-// ...existing code...
 class _StatisticsPageState extends State<StatisticsPage> {
-  final int _monthlyGoal = 50; // Example monthly goal
+  // Objetivo mensual de reciclaje que el usuario debe alcanzar.
+  final int _monthlyGoal = 50;
 
-  // Tipos de residuos y su conteo
+  // Un mapa para almacenar el conteo de bolsas para cada tipo de residuo.
   final Map<String, int> _recycleCounts = {
     'Plástico': 0,
     'Papel': 0,
@@ -20,14 +21,18 @@ class _StatisticsPageState extends State<StatisticsPage> {
     'Otros': 0,
   };
 
+  // Almacena el tipo de residuo actualmente seleccionado en el menú desplegable.
   String _selectedType = 'Plástico';
 
+  // Incrementa el contador para el tipo de residuo seleccionado.
   void _incrementRecycleCount() {
+    // setState notifica a Flutter que el estado ha cambiado y la UI debe redibujarse.
     setState(() {
       _recycleCounts[_selectedType] = (_recycleCounts[_selectedType] ?? 0) + 1;
     });
   }
 
+  // Decrementa el contador, asegurándose de no bajar de cero.
   void _decrementRecycleCount() {
     setState(() {
       if ((_recycleCounts[_selectedType] ?? 0) > 0) {
@@ -36,11 +41,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
     });
   }
 
+  // Getter para calcular el total de bolsas recicladas sumando todos los contadores.
   int get _totalRecycleCount =>
       _recycleCounts.values.fold(0, (sum, count) => sum + count);
 
+  // Construye la interfaz visual de la pantalla.
   @override
   Widget build(BuildContext context) {
+    // Calcula el progreso (un valor entre 0.0 y 1.0) para la barra de progreso.
     double progress =
         _monthlyGoal > 0 ? _totalRecycleCount / _monthlyGoal : 0;
 
@@ -48,14 +56,16 @@ class _StatisticsPageState extends State<StatisticsPage> {
       appBar: AppBar(
         title: const Text('Mis Estadísticas'),
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent, // Barra de título transparente.
         foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
+        // Columna principal que organiza todos los widgets verticalmente.
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // Tarjeta principal que muestra el resumen del progreso mensual.
             Card(
               elevation: 4,
               shape: RoundedRectangleBorder(
@@ -70,6 +80,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 16),
+                    // Muestra el contador total y el objetivo.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -89,6 +100,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       ],
                     ),
                     const SizedBox(height: 16),
+                    // Barra de progreso visual.
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: LinearProgressIndicator(
@@ -105,15 +117,17 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ),
             ),
             const SizedBox(height: 24),
-            // Selector de tipo de residuo
+            // Menú desplegable para seleccionar el tipo de residuo.
             DropdownButton<String>(
               value: _selectedType,
+              // Genera los ítems del menú a partir de las claves del mapa _recycleCounts.
               items: _recycleCounts.keys
                   .map((type) => DropdownMenuItem(
                         value: type,
                         child: Text(type),
                       ))
                   .toList(),
+              // Se ejecuta cuando el usuario selecciona un nuevo ítem.
               onChanged: (value) {
                 if (value != null) {
                   setState(() {
@@ -123,6 +137,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
               },
             ),
             const SizedBox(height: 8),
+            // Fila con los botones para añadir o quitar bolsas.
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -157,16 +172,17 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ],
             ),
             const SizedBox(height: 24),
-            // Tabla resumen por tipo
+            // Lista que muestra el desglose del conteo por cada tipo de residuo.
             Expanded(
               child: ListView(
+                // Itera sobre el mapa de contadores para crear un ListTile por cada entrada.
                 children: _recycleCounts.entries
                     .map(
                       (entry) => ListTile(
                         leading: Icon(Icons.recycling, color: Colors.green[700]),
-                        title: Text(entry.key),
+                        title: Text(entry.key), // Nombre del residuo.
                         trailing: Text(
-                          '${entry.value} bolsas',
+                          '${entry.value} bolsas', // Cantidad.
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -180,4 +196,3 @@ class _StatisticsPageState extends State<StatisticsPage> {
     );
   }
 }
-// ...existing code...
